@@ -1,5 +1,5 @@
 /* =========================================
-   mo.studio - APPLE STYLE CSS
+    STYLE CSS
    ========================================= */
 
 :root {
@@ -730,4 +730,353 @@ textarea.form-control { resize: vertical; min-height: 160px; }
     .flip-card-front, .flip-card-back { position: relative; transform: none !important; aspect-ratio: 3/4; border-radius: 16px; backface-visibility: visible; }
     .flip-card-back { border: 1px solid var(--glass-border); padding: 30px; }
     .flip-card-back::after { display: none; }
+}
+
+/* =========================================
+   Legal Pages (Impressum & Disclaimer)
+   ========================================= */
+.legal-content {
+    max-width: 800px; /* Begrenzte Breite für optimale Lesbarkeit */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 100px;
+}
+
+.legal-block {
+    background: var(--color-card-bg);
+    padding: 40px;
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+    transition: var(--transition-fast);
+}
+
+:root.dark-mode .legal-block { box-shadow: 0 10px 30px rgba(255,255,255,0.02); }
+
+.legal-block h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--color-text);
+}
+
+.legal-block p, .legal-block ul, .legal-block a {
+    color: var(--color-gray);
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+/* Neuer Footer Style */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-links a {
+    color: var(--color-gray);
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+    .footer-content { flex-direction: column; text-align: center; }
+}
+
+/* =========================================
+   404 Page - The Flipped World
+   ========================================= */
+
+/* Der Fullscreen-Perspektiven-Container */
+.error-scene {
+    width: 100vw;
+    height: 100vh;
+    perspective: 2500px; /* Gibt dem 3D-Raum Tiefe */
+    overflow: hidden;
+    cursor: none; /* Custom Cursor dot */
+}
+
+/* Der innere Wrapper, der die gesamte Welt dreht */
+.error-world {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Magie: Bei Hover auf das 404-Element dreht sich die gesamte WELT */
+.error-scene:hover .error-world {
+    transform: rotateY(180deg);
+}
+
+/* Vorder- und Rückseite der Welt */
+.error-front, .error-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10vw;
+}
+
+/* --- Vorderseite --- */
+.error-front {
+    background: var(--color-bg);
+}
+
+.giant-404 {
+    font-size: clamp(8rem, 25vw, 20rem); /* Riesig und responsiv */
+    font-weight: 800;
+    letter-spacing: -10px;
+    line-height: 1;
+    transition: color 0.3s var(--transition-main);
+}
+
+/* Ein kleiner Glitch-Effekt beim Hover (vor dem Drehen) */
+.giant-404::before {
+    content: '404';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    color: var(--color-accent);
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: all 0.2s var(--transition-main);
+}
+
+.error-scene:hover .giant-404::before { opacity: 0.1; }
+
+/* --- Rückseite --- */
+.error-back {
+    background: #000; /* Rückseite der Welt ist dunkel */
+    color: #fff;
+    transform: rotateY(180deg); /* Ist initial umgedreht */
+    justify-content: center;
+}
+
+.error-back h3 { font-size: 2.5rem; margin-bottom: 20px; font-weight: 700; }
+.error-back p { color: #ccc; font-size: 1.2rem; max-width: 600px; margin-bottom: 40px; }
+
+/* Der massive Beam-Me-Home Button */
+.btn-beam {
+    display: inline-block;
+    padding: 20px 40px;
+    background: var(--color-accent); /* Roter Akzent */
+    color: #fff;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-beam:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255,0,0,0.3);
+}
+
+/* Footer-Style für Legal Links auf Legal-Seiten anpassen (Kompakt) */
+.legal-footer {
+    padding: 30px 5vw;
+}
+
+/* Responsive Fallback: Auf Handys lieber keine Fullscreen-Drehung */
+@media (max-width: 900px) {
+    .error-scene { height: auto; perspective: none; cursor: pointer; }
+    .error-world { transform: none !important; display: flex; flex-direction: column; }
+    .error-front, .error-back { position: relative; height: 50vh; transform: none !important; backface-visibility: visible; padding: 10vh 5vw; }
+    .error-back { background: var(--color-card-bg); color: var(--color-text); border-top: 1px solid var(--glass-border); }
+}
+
+/* =========================================
+   Homepage - Dynamic Bento Box Grid
+   ========================================= */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-auto-rows: 300px;
+    gap: 24px;
+    margin-top: 40px;
+}
+
+/* Bento Item Base */
+.bento-item {
+    position: relative;
+    border-radius: 32px;
+    overflow: hidden;
+    cursor: none;
+    background: #000; /* Fallback */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transform: translateZ(0); /* Hardware Acceleration */
+}
+
+/* Mach die erste Kachel größer (Apple Style) */
+@media (min-width: 900px) {
+    .bento-item:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}
+
+.bento-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+    filter: brightness(0.8);
+}
+
+.bento-item:hover .bento-img {
+    transform: scale(1.05);
+    filter: brightness(0.5); /* Wird dunkler, damit man den Text besser lesen kann */
+}
+
+.bento-content {
+    position: absolute;
+    bottom: -20px; /* Leicht nach unten verschoben für den Slide-Effekt */
+    left: 0;
+    width: 100%;
+    padding: 40px 30px 30px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    color: #fff;
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bento-item:hover .bento-content {
+    bottom: 0;
+    opacity: 1;
+}
+
+.bento-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    margin-bottom: 15px;
+}
+
+.bento-content h3 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.1;
+}
+
+.bento-content p {
+    font-size: 1rem;
+    color: #ddd;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Kürzt den Text nach 2 Zeilen ab */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* =========================================
+   Projekte - Abgeschlossene Projekte (Film Roll)
+   ========================================= */
+.film-roll-wrapper {
+    position: relative;
+    height: 300vh; /* Macht den Bereich extra lang, damit wir viel Scroll-Weg haben */
+    margin-top: 100px;
+    z-index: 5;
+}
+
+.film-roll-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--color-bg); /* Passt sich Dark/Light Mode an */
+}
+
+.film-roll-title {
+    position: absolute;
+    top: 15vh;
+    left: 5vw;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    z-index: 10;
+}
+
+.film-roll-track {
+    display: flex;
+    gap: 40px;
+    padding: 0 5vw;
+    will-change: transform;
+    /* Die Breite ergibt sich automatisch aus den Karten */
+}
+
+.film-card {
+    flex: 0 0 400px; /* Feste Breite für jede Karte */
+    height: 550px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    filter: grayscale(100%); /* Startet Schwarz-Weiß (Vergangenheit) */
+    transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.film-card:hover {
+    filter: grayscale(0%); /* Wird bunt bei Hover */
+    transform: scale(1.03) rotate(2deg); /* Spielerische Neigung */
+    z-index: 2;
+}
+
+.film-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.film-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 30px 30px;
+    background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+    color: #fff;
+}
+
+.film-info h3 { font-size: 1.8rem; margin-bottom: 5px; }
+.film-info p { font-size: 1rem; color: #ccc; }
+
+/* Responsive: Auf Handys schalten wir das auf normales seitliches Wischen (Swipe) um */
+@media (max-width: 768px) {
+    .film-roll-wrapper { height: auto; margin-top: 50px; }
+    .film-roll-sticky { position: relative; height: auto; overflow-x: auto; padding: 100px 0 40px; scroll-snap-type: x mandatory; }
+    .film-roll-title { top: 20px; }
+    .film-roll-track { transform: none !important; padding: 0 20px; }
+    .film-card { flex: 0 0 85vw; height: 450px; filter: grayscale(0%); scroll-snap-align: center; }
 }
