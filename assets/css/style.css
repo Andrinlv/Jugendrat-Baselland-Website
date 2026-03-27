@@ -180,3 +180,554 @@ footer { padding: 60px 5vw; background: var(--color-card-bg); border-top: 1px so
     body { cursor: auto; }
     a { cursor: pointer; }
 }
+
+/* =========================================
+   Horizontal Scroll Section (Projekte)
+   ========================================= */
+.horizontal-scroll-wrapper {
+    position: relative;
+    height: 400vh; /* Erzeugt den Platz zum Scrollen (4 Bildschirmlängen) */
+}
+
+.horizontal-scroll-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.horizontal-scroll-track {
+    display: flex;
+    gap: 5vw;
+    padding: 0 5vw;
+    width: max-content;
+    will-change: transform; /* Hardware-Beschleunigung für absolute Flüssigkeit */
+}
+
+.hz-item {
+    width: 60vw;
+    height: 70vh;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    cursor: none; /* Custom Cursor aktivieren */
+}
+
+:root.dark-mode .hz-item { box-shadow: 0 20px 50px rgba(255,255,255,0.05); }
+
+.hz-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hz-item:hover img { transform: scale(1.05); }
+
+/* Schwebende Info-Box im Apple-Glas-Design */
+.hz-info {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    max-width: 80%;
+    transition: var(--transition-fast);
+}
+
+.hz-info h3 { font-size: 2rem; margin-bottom: 10px; font-weight: 700; letter-spacing: -1px; }
+.hz-info p { color: var(--color-gray); }
+
+/* Responsive Fallback: Auf dem Handy normal untereinander */
+@media (max-width: 900px) {
+    .horizontal-scroll-wrapper { height: auto; padding: 50px 0; }
+    .horizontal-scroll-sticky { position: relative; height: auto; overflow: visible; }
+    .horizontal-scroll-track { flex-direction: column; width: 100%; padding: 0 5vw; gap: 30px; }
+    .hz-item { width: 100%; height: 50vh; }
+    .hz-info { bottom: 20px; left: 20px; right: 20px; max-width: none; padding: 20px; }
+    .hz-info h3 { font-size: 1.5rem; }
+}
+
+/* =========================================
+   Contact Section & Floating Labels
+   ========================================= */
+.contact-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.contact-info { display: flex; flex-direction: column; gap: 20px; }
+
+.contact-form {
+    background: var(--color-card-bg);
+    padding: 50px;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+    transition: var(--transition-fast);
+}
+
+:root.dark-mode .contact-form { box-shadow: 0 20px 40px rgba(255,255,255,0.05); }
+
+.form-group { position: relative; margin-bottom: 30px; }
+
+/* Das Eingabefeld */
+.form-control {
+    width: 100%;
+    padding: 24px 20px 10px; /* Platz für das schwebende Label schaffen */
+    font-size: 1.1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    outline: none;
+    transition: var(--transition-fast);
+    font-family: var(--font-main);
+}
+
+.form-control:focus {
+    border-color: var(--color-gray);
+    box-shadow: 0 0 0 4px rgba(134, 134, 139, 0.1);
+}
+
+textarea.form-control { resize: vertical; min-height: 160px; }
+
+/* Das Label (Startposition) */
+.form-label {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    font-size: 1.1rem;
+    color: var(--color-gray);
+    pointer-events: none; /* Klicks gehen durch das Label hindurch aufs Feld */
+    transition: var(--transition-fast);
+    transform-origin: left top;
+}
+
+/* Die Magie: Floating Effect */
+/* Wenn das Feld fokussiert ist ODER der unsichtbare Placeholder NICHT gezeigt wird (weil Text drin steht) */
+.form-control:focus ~ .form-label,
+.form-control:not(:placeholder-shown) ~ .form-label {
+    transform: translateY(-10px) scale(0.75);
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+/* Submit Button */
+.btn-submit {
+    display: inline-block;
+    width: 100%;
+    padding: 18px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: none; /* Custom Cursor */
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: center;
+}
+
+.btn-submit:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+:root.dark-mode .btn-submit:hover { box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
+
+@media (max-width: 900px) {
+    .contact-section { grid-template-columns: 1fr; }
+    .contact-form { padding: 30px; }
+}
+
+/* =========================================
+   Über Uns - Artistic & Interactive
+   ========================================= */
+
+/* Endlos durchlaufender Text (Marquee) */
+.marquee-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 20px 0;
+    position: relative;
+    margin-bottom: -80px; /* Zieht das nachfolgende Bild in den Text */
+    z-index: 0;
+}
+
+.marquee-text {
+    display: inline-block;
+    font-size: clamp(4rem, 10vw, 10rem);
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-gray); /* Umriss-Schrift */
+    text-transform: uppercase;
+    animation: marquee 25s linear infinite;
+    letter-spacing: -2px;
+    opacity: 0.3;
+}
+
+:root.dark-mode .marquee-text { opacity: 0.15; }
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Künstlerisches Einzel-Portrait */
+.artistic-portrait {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    border-radius: 32px;
+    overflow: hidden;
+    margin: 60px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.artistic-portrait img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.artistic-portrait:hover img { transform: scale(1.05); }
+
+/* Schwebende Info-Karte auf dem Portrait */
+.artistic-overlay {
+    position: relative;
+    z-index: 2;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    padding: 50px;
+    border-radius: 24px;
+    text-align: center;
+    border: 1px solid var(--glass-border);
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 500px;
+}
+
+.artistic-portrait:hover .artistic-overlay {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Spielerisches Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.team-member {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 3/4; /* Perfektes Portrait-Format */
+    cursor: none;
+    background: #000; /* Dunkler Hintergrund für den Reveal-Effekt */
+}
+
+/* Der magische Reveal-Effekt */
+.team-member img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) blur(8px);
+    opacity: 0.4;
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.team-member:hover img {
+    filter: grayscale(0%) blur(0px);
+    opacity: 1;
+    transform: scale(1.08);
+}
+
+/* Namensschild, das reinslidet */
+.team-info {
+    position: absolute;
+    bottom: -80px; /* Versteckt unter dem Rand */
+    left: 0;
+    width: 100%;
+    padding: 40px 20px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    color: #fff;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: center;
+}
+
+.team-info h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 5px; }
+.team-info p { color: #ccc; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
+
+.team-member:hover .team-info {
+    bottom: 0; /* Slidet nach oben */
+}
+
+/* =========================================
+   Event Portal - Interactive List
+   ========================================= */
+.events-portal {
+    display: flex;
+    gap: 60px;
+    position: relative;
+    padding-bottom: 100px;
+}
+
+/* Linke Seite: Die Liste */
+.events-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-row {
+    display: flex;
+    align-items: center;
+    padding: 50px 0;
+    border-bottom: 1px solid var(--glass-border);
+    transition: var(--transition-main);
+    cursor: none;
+    position: relative;
+}
+
+/* Der Fokus-Effekt: Dimmt andere ab, wenn die Liste gehovert wird */
+.events-list:hover .event-row:not(:hover) {
+    opacity: 0.3;
+    filter: blur(2px);
+}
+
+.event-row:hover {
+    transform: translateX(30px); /* Slidet spielerisch nach rechts */
+}
+
+.event-date {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-gray);
+    width: 150px;
+    flex-shrink: 0;
+}
+
+.event-info h3 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 10px;
+}
+
+.event-info p {
+    color: var(--color-gray);
+    font-size: 1.1rem;
+}
+
+/* Mobile Bild-Platzhalter (auf Desktop versteckt) */
+.event-mobile-img {
+    display: none;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+
+/* Rechte Seite: Sticky Image Reveal */
+.events-visuals {
+    width: 40vw;
+    height: 70vh;
+    position: sticky;
+    top: 15vh; /* Bleibt beim Scrollen hier stehen */
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+:root.dark-mode .events-visuals { box-shadow: 0 30px 60px rgba(255,255,255,0.05); }
+
+.event-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+}
+
+/* Aktives Bild wird eingeblendet und herangezoomt */
+.event-img.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+}
+
+/* Responsive: Auf Handys das Sticky-Layout auflösen */
+@media (max-width: 1000px) {
+    .events-portal { flex-direction: column; }
+    .events-visuals { display: none; } /* Sticky Container verstecken */
+    .event-mobile-img { display: block; } /* Mobile Bilder zeigen */
+    .event-row { flex-direction: column; align-items: flex-start; padding: 30px 0; }
+    .event-row:hover { transform: none; }
+    .events-list:hover .event-row:not(:hover) { opacity: 1; filter: none; }
+    .event-date { margin-bottom: 10px; width: auto; }
+}
+
+/* =========================================
+   Team Section - 3D Trading Cards
+   ========================================= */
+.team-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+/* Der Container, der die 3D-Perspektive definiert (zwingend nötig!) */
+.flip-card-scene {
+    aspect-ratio: 3/4; /* Kartenformat */
+    perspective: 2000px; /* Gibt dem 3D-Raum Tiefe. Kleinerer Wert = extremerer Effekt */
+    cursor: none; /* Custom Cursor dot verwenden */
+    will-change: transform;
+}
+
+/* Der innere Wrapper, der sich tatsächlich dreht */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); /* Apple-Bezier Kurve */
+    transform-style: preserve-3d; /* Zwingend, damit die Vorder-/Rückseite 3D wirken */
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+:root.dark-mode .flip-card-inner { box-shadow: 0 15px 40px rgba(255,255,255,0.05); }
+
+/* Die Magie: Bei Hover dreht sich der innere Wrapper */
+.flip-card-scene:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Gemeinsame Stile für Vorder- und Rückseite */
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Versteckt die Rückseite des Elements */
+    backface-visibility: hidden;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Vorderseite --- */
+.flip-card-front {
+    background: #000; /* Falls Bild nicht lädt */
+    color: #fff;
+    z-index: 2; /* Liegt oben auf */
+}
+
+.flip-card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Sanfter Zoom-In auf der Vorderseite beim Hovern (spieleriisch) */
+.flip-card-scene:hover .flip-card-front img { transform: scale(1.05); }
+
+.flip-card-front-info {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+    text-align: left;
+}
+
+.flip-card-front-info h3 {
+    font-size: 1.8rem; font-weight: 700;
+    letter-spacing: -0.5px; margin-bottom: 5px;
+}
+
+.flip-card-front-info p {
+    color: #ccc; text-transform: uppercase;
+    letter-spacing: 1px; font-size: 0.8rem; font-weight: 600;
+}
+
+/* --- Rückseite --- */
+.flip-card-back {
+    background: var(--glass-bg); /* Apple Glas Design */
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    color: var(--color-text);
+    transform: rotateY(180deg); /* Ist initial umgedreht */
+    z-index: 1; /* Liegt hinter der Vorderseite */
+    padding: 40px;
+    justify-content: space-between;
+    border: 1px solid var(--glass-border);
+}
+
+/* Schatten-Simulation auf der Rückseite (Wird dunkler, wenn sie weg-dreht) */
+.flip-card-back::after {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    border-radius: 24px;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+}
+
+.flip-card-scene:hover .flip-card-back::after { opacity: 0; }
+.flip-card-scene:not(:hover) .flip-card-back::after { opacity: 1; } /* Schatten, wenn umgedreht */
+
+/* Layout auf der Rückseite */
+.card-back-header { text-align: left; position: relative; z-index: 1; }
+.card-back-header h3 { font-size: 1.5rem; margin-bottom: 10px; }
+.card-back-meta { color: var(--color-gray); font-size: 0.9rem; line-height: 1.5; }
+.card-back-meta strong { color: var(--color-text); font-weight: 600; }
+
+.card-back-quote {
+    font-size: 1.1rem; font-style: italic;
+    font-weight: 500; color: var(--color-text);
+    position: relative; z-index: 1; margin: 30px 0;
+}
+.card-back-quote::before { content: '“'; color: var(--color-accent); font-size: 2rem; }
+
+.card-back-action { position: relative; z-index: 1; text-align: right; }
+.card-back-action a { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--color-accent); transition: var(--transition-fast); }
+.card-back-action a:hover { text-decoration: underline; }
+
+/* Responsive: Auf Handys das 3D-Hovern ggf. deaktivieren oder stapeln */
+@media (max-width: 900px) {
+    .team-cards-grid { grid-template-columns: 1fr; }
+    .flip-card-scene { aspect-ratio: auto; height: auto; }
+    /* Auf Handys lieber keine 3D-Drehung, sondern normal stapeln oder Klick-Event nutzen */
+    .flip-card-inner { position: relative; transform: none !important; box-shadow: none; display: flex; flex-direction: column; gap: 20px; }
+    .flip-card-front, .flip-card-back { position: relative; transform: none !important; aspect-ratio: 3/4; border-radius: 16px; backface-visibility: visible; }
+    .flip-card-back { border: 1px solid var(--glass-border); padding: 30px; }
+    .flip-card-back::after { display: none; }
+}
