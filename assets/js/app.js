@@ -1,14 +1,18 @@
 /* =========================================
-   mo.studio - INTERACTIVE ENGINE
+   APP.JS - INTERACTIVE ENGINE (Logik)
    ========================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    // --- Mobile / Touch Detection ---
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    const isMobile = () => window.innerWidth <= 900;
     
     // --- 1. Custom Cursor ---
     const cursorDot = document.getElementById("cursor-dot");
     const interactables = document.querySelectorAll("a, button, .card, .events-visuals, .hz-item, .form-control, .artistic-portrait, .team-member, .flip-card-scene"); // .flip-card-scene HIER ERGÄNZEN
 
-    if (cursorDot) {
+    if (cursorDot && !isTouchDevice) {
         window.addEventListener("mousemove", (e) => {
             cursorDot.style.left = `${e.clientX}px`;
             cursorDot.style.top = `${e.clientY}px`;
@@ -18,6 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
             el.addEventListener("mouseenter", () => cursorDot.classList.add("hovered"));
             el.addEventListener("mouseleave", () => cursorDot.classList.remove("hovered"));
         });
+    } else if (cursorDot) {
+        // Hide cursor dot on touch devices
+        cursorDot.style.display = 'none';
     }
 
     // --- 2. Apple-Style Scroll Reveal Observer ---
@@ -146,43 +153,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- BENTO BOX DATENBANK (Startseite) ---
-    // Hier bestimmst du die Vorschau-Kacheln auf der Startseite.
-    const bentoProjects = [
-        {
-            tag: "Highlight",
-            title: "Die neue Jugend-Lounge",
-            description: "Wir haben den alten Raum komplett renoviert. Ein neuer Treffpunkt für alle ab 14 Jahren mit Gaming-Ecke und Workspace.",
-            image: "https://picsum.photos/seed/bento1/1200/1200",
-            link: "projekte.html" // Wohin soll die Kachel führen?
-        },
-        {
-            tag: "Event",
-            title: "Politik-Talk 2026",
-            description: "Diskutiere mit lokalen Politikern über die Zukunft von Pratteln.",
-            image: "https://picsum.photos/seed/bento2/800/800",
-            link: "events.html"
-        },
-        {
-            tag: "Team",
-            title: "Wir suchen dich!",
-            description: "Werde Teil des Jugendrats und verändere deine Gemeinde aktiv mit.",
-            image: "https://picsum.photos/seed/bento3/800/800",
-            link: "team.html"
-        },
-        {
-            tag: "Projekt",
-            title: "Skatepark Upgrade",
-            description: "Neue Rampen und Flutlichter für längere Sessions im Sommer.",
-            image: "https://picsum.photos/seed/bento4/800/800",
-            link: "projekte.html"
-        }
-    ];
-
     // --- AUTOMATISCHER BENTO-GENERATOR ---
+    // Greift auf window.bentoProjects aus data.js zu
+    const bentoProjects = window.bentoProjects;
     const bentoContainer = document.getElementById('bento-grid-container');
     
-    if (bentoContainer) {
+    if (bentoContainer && bentoProjects) {
         let bentoHtml = '';
         
         bentoProjects.forEach((item, index) => {
@@ -203,97 +179,12 @@ document.addEventListener("DOMContentLoaded", () => {
         bentoContainer.innerHTML = bentoHtml;
     }
 
-    // --- TEAM DATENBANK ---
-    // Hier kannst du Mitglieder extrem einfach hinzufügen, ändern oder löschen.
-    const teamMembers = [
-        {
-            name: "Qwertz Ui",
-            roleFront: "Zxcvbn Qwe",
-            roleBack: "Qwertz Uiops Lkjhg",
-            age: "17",
-            quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
-            instagram: "Vbnm_qwe",
-            image: "https://picsum.photos/seed/member1/800/1000"
-        },
-        {
-            name: "Plmko Ij",
-            roleFront: "Yxcvb Nm",
-            roleBack: "Zxcvb Nmqwe rtyui opasd.",
-            age: "19",
-            quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
-            instagram: "Plmko_insta",
-            image: "https://picsum.photos/seed/member2/800/1000"
-        },
-        {
-            name: "Rtuz Vb",
-            roleFront: "Qwerty Uiop",
-            roleBack: "Asdfg hjkl zxcvb nmqwer tyu.",
-            age: "16",
-            quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
-            instagram: "Rtuz_official",
-            image: "https://picsum.photos/seed/member3/800/1000"
-        },
-        {
-            name: "Qwertz Ui",
-            roleFront: "Zxcvbn Qwe",
-            roleBack: "Qwertz Uiops Lkjhg",
-            age: "17",
-            quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
-            instagram: "Vbnm_qwe",
-            image: "https://picsum.photos/seed/member1/800/1000"
-        },
-        {
-            name: "Plmko Ij",
-            roleFront: "Yxcvb Nm",
-            roleBack: "Zxcvb Nmqwe rtyui opasd.",
-            age: "19",
-            quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
-            instagram: "Plmko_insta",
-            image: "https://picsum.photos/seed/member2/800/1000"
-        },
-        {
-            name: "Rtuz Vb",
-            roleFront: "Qwerty Uiop",
-            roleBack: "Asdfg hjkl zxcvb nmqwer tyu.",
-            age: "16",
-            quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
-            instagram: "Rtuz_official",
-            image: "https://picsum.photos/seed/member3/800/1000"
-        },
-        {
-            name: "Qwertz Ui",
-            roleFront: "Zxcvbn Qwe",
-            roleBack: "Qwertz Uiops Lkjhg",
-            age: "17",
-            quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
-            instagram: "Vbnm_qwe",
-            image: "https://picsum.photos/seed/member1/800/1000"
-        },
-        {
-            name: "Plmko Ij",
-            roleFront: "Yxcvb Nm",
-            roleBack: "Zxcvb Nmqwe rtyui opasd.",
-            age: "19",
-            quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
-            instagram: "Plmko_insta",
-            image: "https://picsum.photos/seed/member2/800/1000"
-        },
-        {
-            name: "Rtuz Vb",
-            roleFront: "Qwerty Uiop",
-            roleBack: "Asdfg hjkl zxcvb nmqwer tyu.",
-            age: "16",
-            quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
-            instagram: "Rtuz_official",
-            image: "https://picsum.photos/seed/member3/800/1000"
-        }
-        // Willst du ein neues Mitglied hinzufügen? Kopiere einfach einen Block von { bis }, füge ihn hier ein und ändere den Text!
-    ];
-
     // --- AUTOMATISCHER KARTEN-GENERATOR ---
+    // Greift auf window.teamMembers aus data.js zu
+    const teamMembers = window.teamMembers;
     const teamContainer = document.getElementById('team-grid-container');
     
-    if (teamContainer) {
+    if (teamContainer && teamMembers) {
         let htmlContent = '';
         
         teamMembers.forEach((member, index) => {
@@ -321,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </div>
                             </div>
                             <div class="card-back-quote">
-                                “${member.quote}”
+                                "${member.quote}"
                             </div>
                             <div class="card-back-action">
                                 <a href="https://instagram.com/${member.instagram}" target="_blank">@${member.instagram}</a>
@@ -349,6 +240,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (filmWrapper && filmTrack) {
         window.addEventListener('scroll', () => {
+            // Auf mobilen Geräten die JS-Scroll-Logik ignorieren (CSS scroll-snap übernimmt)
+            if (isMobile()) return;
+
             // Holt die Position des Wrappers
             const wrapperRect = filmWrapper.getBoundingClientRect();
             const windowHeight = window.innerHeight;
@@ -379,32 +273,38 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Mobile / Touch Detection (second listener scope) ---
+    const isTouchDevice2 = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
     // --- MAGNETIC BUTTON LOGIC ---
     const magneticWraps = document.querySelectorAll('.magnetic-wrap');
 
     magneticWraps.forEach(wrap => {
         const btn = wrap.querySelector('.btn-magnetic');
         
-        // Magnet zieht an
-        wrap.addEventListener('mousemove', (e) => {
-            const position = wrap.getBoundingClientRect();
-            // Berechnet die Mausposition relativ zur Mitte des Buttons
-            const x = e.clientX - position.left - position.width / 2;
-            const y = e.clientY - position.top - position.height / 2;
-            
-            // Bewegt den Button sanft zur Maus (Faktor 0.3 für einen subtilen Effekt)
-            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-        });
+        // Magnetic effect nur auf Nicht-Touch-Geräten aktivieren
+        if (!isTouchDevice2) {
+            // Magnet zieht an
+            wrap.addEventListener('mousemove', (e) => {
+                const position = wrap.getBoundingClientRect();
+                // Berechnet die Mausposition relativ zur Mitte des Buttons
+                const x = e.clientX - position.left - position.width / 2;
+                const y = e.clientY - position.top - position.height / 2;
+                
+                // Bewegt den Button sanft zur Maus (Faktor 0.3 für einen subtilen Effekt)
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
 
-        // Magnet lässt los
-        wrap.addEventListener('mouseleave', () => {
-            btn.style.transform = `translate(0px, 0px)`;
-            // Kurze Transition für das "Zurückschnappen" hinzufügen
-            btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-            setTimeout(() => {
-                btn.style.transition = 'transform 0.1s linear'; // Zurücksetzen für flüssige Mausbewegung
-            }, 500);
-        });
+            // Magnet lässt los
+            wrap.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0px, 0px)`;
+                // Kurze Transition für das "Zurückschnappen" hinzufügen
+                btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                setTimeout(() => {
+                    btn.style.transition = 'transform 0.1s linear'; // Zurücksetzen für flüssige Mausbewegung
+                }, 500);
+            });
+        }
     });
 
     // --- FORMULAR SUBMIT ANIMATION ---
