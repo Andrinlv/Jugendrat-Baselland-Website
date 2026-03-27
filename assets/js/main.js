@@ -377,3 +377,67 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- MAGNETIC BUTTON LOGIC ---
+    const magneticWraps = document.querySelectorAll('.magnetic-wrap');
+
+    magneticWraps.forEach(wrap => {
+        const btn = wrap.querySelector('.btn-magnetic');
+        
+        // Magnet zieht an
+        wrap.addEventListener('mousemove', (e) => {
+            const position = wrap.getBoundingClientRect();
+            // Berechnet die Mausposition relativ zur Mitte des Buttons
+            const x = e.clientX - position.left - position.width / 2;
+            const y = e.clientY - position.top - position.height / 2;
+            
+            // Bewegt den Button sanft zur Maus (Faktor 0.3 für einen subtilen Effekt)
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+
+        // Magnet lässt los
+        wrap.addEventListener('mouseleave', () => {
+            btn.style.transform = `translate(0px, 0px)`;
+            // Kurze Transition für das "Zurückschnappen" hinzufügen
+            btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+            setTimeout(() => {
+                btn.style.transition = 'transform 0.1s linear'; // Zurücksetzen für flüssige Mausbewegung
+            }, 500);
+        });
+    });
+
+    // --- FORMULAR SUBMIT ANIMATION ---
+    const contactForm = document.getElementById('interactive-contact-form');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Verhindert das Neuladen der Seite
+            
+            const submitBtn = contactForm.querySelector('.btn-magnetic');
+            const originalText = submitBtn.innerHTML;
+            
+            // 1. Lade-Status
+            submitBtn.innerHTML = 'Wird gesendet... ⏳';
+            submitBtn.style.opacity = '0.8';
+            
+            // 2. Fake-Server-Delay (tut so, als würde er senden)
+            setTimeout(() => {
+                // 3. Erfolgs-Status
+                submitBtn.classList.add('success');
+                submitBtn.innerHTML = 'Nachricht gesendet! 🚀';
+                submitBtn.style.opacity = '1';
+                
+                // Formular leeren
+                contactForm.reset();
+                
+                // Optional: Button nach 5 Sekunden wieder normalisieren
+                setTimeout(() => {
+                    submitBtn.classList.remove('success');
+                    submitBtn.innerHTML = originalText;
+                }, 5000);
+                
+            }, 1500); // 1.5 Sekunden "Ladezeit"
+        });
+    }
+});

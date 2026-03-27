@@ -367,9 +367,9 @@ textarea.form-control { resize: vertical; min-height: 160px; }
     font-size: clamp(4rem, 10vw, 10rem);
     font-weight: 800;
     color: transparent;
-    -webkit-text-stroke: 1px var(--color-gray); /* Umriss-Schrift */
+    -webkit-text-stroke: 3px var(--color-text); /* Umriss-Schrift */
     text-transform: uppercase;
-    animation: marquee 25s linear infinite;
+    animation: marquee 40s linear infinite;
     letter-spacing: -2px;
     opacity: 0.3;
 }
@@ -1079,4 +1079,118 @@ textarea.form-control { resize: vertical; min-height: 160px; }
     .film-roll-title { top: 20px; }
     .film-roll-track { transform: none !important; padding: 0 20px; }
     .film-card { flex: 0 0 85vw; height: 450px; filter: grayscale(0%); scroll-snap-align: center; }
+}
+
+/* =========================================
+   Kontakt - Interactive Form & Magnetic Button
+   ========================================= */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 40px;
+}
+
+.contact-info-box {
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    padding: 50px;
+    border-radius: 32px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.contact-info-box h2 { font-size: 2.5rem; margin-bottom: 20px; }
+.contact-info-box p { color: var(--color-gray); font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
+
+/* Floating Label Formular */
+.modern-form {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.form-group {
+    position: relative;
+    width: 100%;
+}
+
+/* Die Inputs (unsichtbarer Rahmen, nur Linie unten) */
+.form-control {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--glass-border);
+    padding: 10px 0;
+    font-size: 1.2rem;
+    color: var(--color-text);
+    transition: var(--transition-main);
+    resize: none; /* Verhindert hässliches Textarea-Resizen */
+}
+
+/* Der leuchtende Strich beim Anklicken */
+.form-control:focus {
+    outline: none;
+    border-bottom-color: var(--color-accent);
+}
+
+/* Das fliegende Label */
+.floating-label {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: var(--color-gray);
+    font-size: 1.2rem;
+    pointer-events: none; /* Klicks gehen durch das Label hindurch */
+    transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Die Magie: Wenn fokussiert ODER wenn Text drinsteht (dank placeholder=" ") */
+.form-control:focus ~ .floating-label,
+.form-control:not(:placeholder-shown) ~ .floating-label {
+    top: -20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Magnetic Button Wrapper */
+.magnetic-wrap {
+    align-self: flex-start;
+    display: inline-block;
+    padding: 20px; /* Der Fangbereich für den Magneten */
+    margin-left: -20px;
+    cursor: none;
+}
+
+.btn-magnetic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+    will-change: transform;
+}
+
+/* Erfolgs-Status des Buttons */
+.btn-magnetic.success {
+    background: #28a745; /* Grün */
+    color: #fff;
+    pointer-events: none;
+}
+
+@media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .contact-info-box { padding: 30px; }
 }
